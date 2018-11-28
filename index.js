@@ -4,38 +4,35 @@
 
 // the first files are the required NPM modules and external constructors
 const inquirer = require('inquirer');
-const fs = require('fs');
-const Word = require("./word")
-const Letter = require('./letter')
-const fullWord = []
+const Word = require("./word.js");
+
 
 // This is the letters array to check against
-const lettersArray = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+const lettersArray = "abcdefghijklmnopqrstuvwxyz";
+// const lettersArray = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
 // I am using different trees as words to guess
 const wordsToGuessArray = ['oak','juniper','maple','sequoia','magnolia','willow','dogwood','spruce','elm','cedar'];
 
+var indexValue = (Math.floor(Math.random() * wordsToGuessArray.length))
+var wordtoGuess = wordsToGuessArray[indexValue];
+var chooseAnotherWord = false;
 
 // array for the letters that have been guessed by player
 var lettersGuessedWrong = [];
 
 // an array to store correctly guessed letters;
 var correctLetterGuesses = [];
-
-var chooseAnotherWord = true;
-
-var wordCount = wordsToGuessArray.length;
 var guessesLeft = 10;
-var wordtoGuess = ""
 
 // this function selects a random word from the list of trees.  It can change automously based on the number of trees in the array.
-const selectRandomWord = function (){
-  var indexValue = (Math.floor(Math.random() * wordCount))
-  wordtoGuess = wordsToGuessArray[indexValue];
-  return wordtoGuess;
-}
+// const selectRandomWord = function (){
+//   indexValue = (Math.floor(Math.random() * wordsToGuessArray.length))
+//   wordtoGuess = wordsToGuessArray[indexValue];
+//   return wordtoGuess;
+// }
 
-var word = new Word (selectRandomWord());
+word = new Word(wordtoGuess);
 
 // this function will clear the screen at the begining of game play
 console.reset = function () {
@@ -45,21 +42,25 @@ console.reset = function () {
 
 const mainGamePlay = function(){
     // clearing the screen to make game play easier
-    console.reset()
+    // console.reset()
     // choose word to use
     if (chooseAnotherWord) {
-    selectRandomWord();
-      chooseAnotherWord = false;
+    // selectRandomWord();
+      indexValue = (Math.floor(Math.random() * wordsToGuessArray.length));
+      wordtoGuess = wordsToGuessArray[indexValue];
       word = new Word(wordtoGuess);
-    }
-
+      chooseAnotherWord = false;
+      }
+    console.log('inside main game but after word chosen')
+    console.log('the word chosen is ' + wordtoGuess)
+    var fullWord = [];
 
     word.newLetterObjects.forEach(completeCheck);
-
     // give user twice as many guesses as the word length
-    guessesLeft = (wordtoGuess.length * 2)
-
-    if (fullWord.includes(false)){ 
+    // guessesLeft = (wordtoGuess.length * 2)
+      console.log("the full word is " + fullWord)
+    if (fullWord.includes(false)) {
+      console.log("inside if statement for inquirer prompt")
 
     // Create a "Prompt" to begin the word guess application
     inquirer
@@ -69,7 +70,7 @@ const mainGamePlay = function(){
         type: "input",
         message: "Please choose a letter",
         name: "guessedLetter"
-        },
+        }
       ])
       .then(function(response) {
 
@@ -118,7 +119,7 @@ const mainGamePlay = function(){
               }
 
               function wordCheck(key) {
-                wordCheckArray.push(key.guessedLetter)
+                wordCheckArray.push(key.guessed)
               }
             }
           }
@@ -130,12 +131,35 @@ const mainGamePlay = function(){
   }
   
   function completeCheck(key){
-      fullWord.push(key.guessedLetter);
+    console.log('inside complete check function and key is ' + key)
+      fullWord.push(key.guessed);
   }
 }
 
 function restartGame(){
-  console.log('restart game selected')
+  inquirer
+  .prompt([
+      {
+          type: "list",
+          message: "Would you like to:",
+          choices: ["Play Again", "Exit"],
+          name: "restart"
+      }
+  ])
+  .then(function (response) {
+      if (response.restart === "Play Again") {
+          chooseAnotherWord = true;
+          lettersGuessedWrong = [];
+          
+          correctLetterGuesses = [];
+
+          guessesLeft = 10;
+          mainGamePlay(); 
+      } else {
+        
+          return;
+        }
+  })
 }
 
     mainGamePlay()

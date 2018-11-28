@@ -4,12 +4,8 @@ const Letter = require('./letter')
 //This is used to create an object representing the current word the user is attempting to guess. That means the constructor should define:
 //   * An array of `new` Letter objects representing the letters of the underlying word
 const Word = function (wordToGuess){
-    console.log('in the main Word constructor function')
-    console.log('this.word is ' + wordToGuess)
     this.word = wordToGuess;
-    console.log('the word is ' + this.word)
     this.wordLength = wordToGuess.length;
-    console.log('word length is ' + this.wordLength)
     this.newLetterObjects = []
     this.showGuessesArray = []
     
@@ -19,7 +15,6 @@ const Word = function (wordToGuess){
     };
 
     this.createWordArray = function (){
-        console.log("in create word array function");
         // make the array by looping through the word;
         for (i = 0; i < this.wordLength; i++) {
             showGuessesArray += this.newLetterObjects[i] + " ";

@@ -73,10 +73,7 @@ const mainGamePlay = function(){
       ])
       .then(function(response) {
 
-            if (response === 'exit'){
-              process.exit();
-            }
-            else if (!lettersArray.includes(response.guessedLetter) || response.guessedLetter.length > 1){
+            if (!lettersArray.includes(response.guessedLetter) || response.guessedLetter.length > 1){
               console.log("\n")
               consold.log("Wrong guess! Try another letter please!\n");
               mainGamePlay();

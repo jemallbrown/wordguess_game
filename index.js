@@ -51,8 +51,8 @@ const mainGamePlay = function(){
       word = new Word(wordtoGuess);
       chooseAnotherWord = false;
       }
-    console.log('inside main game but after word chosen')
-    console.log('the word chosen is ' + wordtoGuess)
+    // console.log('inside main game but after word chosen')
+    // console.log('the word chosen is ' + wordtoGuess)
     var fullWord = [];
 
     word.newLetterObjects.forEach(completeCheck);
